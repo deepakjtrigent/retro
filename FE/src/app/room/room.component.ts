@@ -1,22 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css'],
 })
 export class RoomComponent implements OnInit {
-  constructor(
-    private dialog: MatDialog
-  ) {}
-  public clickMessage:string = '';
+  constructor(private dialog: MatDialog) {}
+  public clickMessage: string = '';
   public start_doing_Input: boolean = false;
   public stop_doing_Input: boolean = false;
   public continue_doing_Input: boolean = false;
 
-  public isEditingStartTitle:boolean = false;
-  public startTitle:string = 'Start Doing';
+  public isEditingStartTitle: boolean = false;
+  public startTitle: string = 'Start Doing';
 
   public ngOnInit(): void {}
 
@@ -70,6 +69,4 @@ export class RoomComponent implements OnInit {
     this.clickMessage = '';
     this.continue_doing_Input = false;
   }
-
-
 }

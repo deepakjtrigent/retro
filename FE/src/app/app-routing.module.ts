@@ -4,12 +4,12 @@ import { RoomComponent } from './room/room.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 
 const routes: Routes = [
-  {path:'',component:LandingPageComponent},
-  {path:'retro/:retro_id',component:RoomComponent},
+  { path: '', component: LandingPageComponent },
+  { path: 'retro/:retro_id', component: RoomComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
