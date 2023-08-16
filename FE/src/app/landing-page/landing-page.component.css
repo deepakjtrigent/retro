@@ -1,0 +1,9 @@
+section{
+    scroll-snap-align: start;
+     
+}
+
+#initial-section{
+    scroll-margin-top: 5rem;
+}
+
