@@ -1,0 +1,14 @@
+.active-button{
+    background-color: var(--primary-shade) ;
+    transform: translateY(-10px) scale(1.1);
+    color: white;
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1), background-color 0.4s ease; 
+  }
+  
+.card-hover:hover{
+    transform: translateY(-10px) scale(1.1);
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1), background-color 0.4s ease;
+}
+#card_button{
+font-family: 'Space Mono' !important;
+}
