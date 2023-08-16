@@ -1,0 +1,119 @@
+<nav
+  class="bg-white border-gray-200 border-b-2 dark:bg-gray-900 sticky top-0 z-50"
+>
+  <div
+    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 xl:mx-6 sm:mx-4"
+  >
+    <a routerLink="/" class="flex justify-start">
+      <img
+        src="../../assets/scrum_poker.svg"
+        class="h-12 mr-3"
+        alt="Retrospective Logo"
+      />
+      <span
+        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+        >Retrospective</span
+      >
+    </a>
+  </div>
+</nav>
+<section
+  class="flex flex-col items-center justify-center mx-6 md:mx-10 lg:mx-16 h-screen"
+  id="initial-section"
+>
+  <h1
+    class="font-extrabold text-center font-sans text-4xl md:text-5xl -mt-20 mb-12"
+  >
+    Retrospective For Agile Development Teams
+  </h1>
+  <p
+    class="text-xl font-medium text-center text-scrum-text-color sm:px-20 mb-8 md:mb-4 sm:mb-2"
+  >
+    Have fun while being productive with our simple and complete tool.
+  </p>
+  <button
+    class="bg-primary-color hover:bg-blue-700 active:bg-primary-shade-color font-medium text-white py-3 px-6 md:px-9 my-7 rounded-lg"
+    (click)="openUserDialog()"
+  >
+    Start a Retro
+  </button>
+</section>
+
+<section
+  id="description"
+  class="bg-gray-100 text-gray-800 flex flex-col items-center"
+>
+  <h1 class="font-bold font-sans text-3xl py-6 md:py-10">How it Works?</h1>
+  <div class="container mx-auto p-4 md:p-8 flex flex-col text-justify">
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">
+      Step 1: Prepare for the Retrospective
+    </h2>
+    <p class="mb-6 md:mb-8">
+      Schedule the retrospective session and invite team members to attend.
+      Choose a suitable retrospective technique or format for the session.
+    </p>
+
+    <h2 class="text-2xl font-semibold mb-4">Step 2: Set the Stage</h2>
+    <p class="mb-6 md:mb-8">
+      Begin the retrospective by setting the stage. Welcome participants and explain the purpose of the retrospective.
+      Remind everyone of the retrospective's guiding principles and the importance of open and honest communication.
+    </p>
+
+    <h2 class="text-2xl font-semibold mb-4">Step 3: Gather Data</h2>
+    <p class="mb-6 md:mb-8">
+      Start collecting data by asking team members to share their observations and feedback on the recent iteration or project.
+      Use techniques like "Start-Stop-Continue to collect insights.
+    </p>
+
+    <h2 class="text-2xl font-semibold mb-4">Step 4: Generate Insights</h2>
+    <p class="mb-6 md:mb-8">
+      Facilitate a discussion around the collected data to identify patterns, trends, and recurring themes.
+Encourage team members to explore the reasons behind both positive outcomes and challenges.
+    </p>
+
+    <h2 class="text-2xl font-semibold mb-4">
+      Step 5: Identify Improvement Actions
+    </h2>
+    <p class="mb-6 md:mb-8">
+      Guide the team in generating actionable improvement ideas based on the identified insights.
+Prioritize the improvement actions that will have the most significant impact on the team's processes and collaboration.
+    </p>
+
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">
+      Step 6: Decide What to Do
+    </h2>
+    <p class="mb-6 md:mb-8">
+      Collaboratively decide on the specific actions the team will take to address the identified improvements.
+Assign responsibilities and due dates for each action item.
+    </p>
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">
+      Step 7: Close the Retrospective
+    </h2>
+    <p class="mb-6 md:mb-8">
+      Summarize the key findings, decisions, and action items from the retrospective.
+Reinforce the commitment of the team to implement the agreed-upon improvements.
+    </p>
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">
+      Step 8: Implement Action Items
+    </h2>
+    <p class="mb-6 md:mb-8">
+      Following the retrospective, team members work on implementing the assigned action items.
+Regularly track progress on the action items and discuss any challenges during subsequent retrospectives.
+    </p>
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">
+      Step 9: Reflect and adapt
+    </h2>
+    <p class="mb-6 md:mb-8">
+      In future retrospectives, reflect on the progress made based on the implemented improvements.
+Assess the impact of the changes and identify further areas for refinement and growth.
+    </p>
+  </div>
+  
+</section>
+<a href="#description">
+  <button
+    class="fixed bottom-8 right-8 bg-gray-200 rounded-full w-14 h-14 shadow-lg flex justify-center items-center hover:bg-gray-300 active:bg-gray-400"
+  >
+    <span class="material-symbols-outlined"> arrow_downward </span>
+  </button>
+</a>
