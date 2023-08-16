@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,22 +14,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RoomComponent } from './room/room.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { UserIdInterceptor } from './user-id.interceptor';
-import { UserFormComponent } from './user-form/user-form.component';
 import { ConfirmationDialogComponent } from './room/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LandingPageComponent,
-    RoomComponent,
-    PageNotFoundComponent,
-    UserFormComponent,
-    ConfirmationDialogComponent,
-  ],
+  declarations: [AppComponent, RoomComponent, ConfirmationDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -42,13 +31,10 @@ import { ConfirmationDialogComponent } from './room/confirmation-dialog/confirma
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: UserIdInterceptor,
-    multi: true,
-  },],
-  bootstrap: [AppComponent]
+  providers: [
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

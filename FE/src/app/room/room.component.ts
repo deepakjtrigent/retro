@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WebsocketService } from '../shared/services/websocket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 @Component({
@@ -7,18 +6,17 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css'],
 })
-export class RoomComponent implements OnInit, OnDestroy {
+export class RoomComponent implements OnInit {
   constructor(
-    private websocketService: WebsocketService,
     private dialog: MatDialog
   ) {}
-  public clickMessage = '';
+  public clickMessage:string = '';
   public start_doing_Input: boolean = false;
   public stop_doing_Input: boolean = false;
   public continue_doing_Input: boolean = false;
 
-  public isEditingStartTitle = false;
-  public startTitle = 'Start Doing';
+  public isEditingStartTitle:boolean = false;
+  public startTitle:string = 'Start Doing';
 
   public ngOnInit(): void {}
 
@@ -73,7 +71,5 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.continue_doing_Input = false;
   }
 
-  public ngOnDestroy(): void {
-    this.websocketService.disconnect();
-  }
+
 }
