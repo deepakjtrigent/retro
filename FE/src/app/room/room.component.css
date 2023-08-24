@@ -1,0 +1,27 @@
+
+ #profileImage{
+    
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #512DA8;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 4px;
+  padding-left: 8px;
+  margin-right: 8px;
+} 
+/* #profileImage {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    background: #004D3C;
+    font-size: 3.5rem;
+    color: #fff;
+    text-align: center;
+    line-height: 10rem;
+    margin: 2rem 0;
+  } */

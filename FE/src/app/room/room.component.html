@@ -1,0 +1,211 @@
+<div
+  class="flex flex-col md:flex-row items-center justify-between p-4 relative top-0 left-0 w-full my-4"
+>
+  <div class="flex items-center ml-4 md:ml-0">
+    <div class="text-2xl md:mr-4">Team Retrospective</div>
+    <div class="bg-blue-100 text-blue-500 py-2 px-4 rounded md:ml-4">
+      Sprint 5
+    </div>
+  </div>
+  <div class="flex items-center justify-center md:ml-4 md:mt-0 mt-4">
+    <div class="ml-4 bg">
+      You have <span class="bg-gray-300 px-2 rounded">00:00:00</span> left
+    </div>
+  </div>
+  <div class="class">
+    <div class="flex items-center mt-4 md:mt-2 md:mr-4">
+      <button
+        class="bg-white-500 text-red-500 border border-red-500 py-2 px-4 rounded"
+      >
+        Stop Timer
+      </button>
+      <button class="md:ml-4 bg-blue-100 text-blue-500 py-2 px-4 rounded">
+        Continue to Grouping
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col md:flex-row p-4 bg-white rounded-lg w-full">
+  <div class="md:w-1/3 p-4">
+    <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+      <div class="p-4 relative flex justify-between items-center">
+        <h2 class="text-xl ml-2">Start Doing</h2>
+        <button
+          class="px-2 border-solid border-2 border-gray-400 rounded-lg text-gray-500"
+        >
+          {{ startcount }}
+        </button>
+      </div>
+
+      <button
+        class="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded w-full mt-5"
+        (click)="start_doing_Input = true"
+      >
+        + Write Note
+      </button>
+
+      <textarea
+        placeholder="Type Here"
+        rows="4"
+        cols="40"
+        *ngIf="start_doing_Input"
+        #newRecord
+        class="mt-6 border-solid w-full"
+        [(ngModel)]="clickMessage"
+      >
+      </textarea>
+
+      <div class="ml-4">
+        <button
+          *ngIf="start_doing_Input"
+          type="button"
+          class="bg-blue-500 text-white px-2 rounded ml-60"
+          (click)="
+            actionType = 'START_DOING';
+            addnote();
+            clickMessage = '';
+            start_doing_Input = false
+          "
+        >
+          Add Note
+        </button>
+      </div>
+
+      <ul>
+        <li *ngFor="let record of startLabelArray">
+          <div class="mx-2 mt-6 border rounded w-88 h-28 bg-gray-50">
+            {{ record.note }}
+            <br />
+            <div class="mt-12 ml-2">
+              <span id="profileImage">{{ record.userName | firstLetter }} </span
+              >{{ record.userName }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="md:w-1/3 p-4">
+    <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+      <div class="p-4 relative flex justify-between items-center">
+        <h2 class="text-xl ml-2" contenteditable="true">Stop Doing</h2>
+        <button
+          class="px-2 border-solid border-2 border-gray-400 rounded-lg text-gray-500"
+        >
+          {{ stopcount }}
+        </button>
+      </div>
+
+      <button
+        (click)="stop_doing_Input = true"
+        class="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded w-full mt-5"
+      >
+        + Write Note
+      </button>
+
+      <textarea
+        placeholder="Type Here"
+        rows="4"
+        cols="40"
+        *ngIf="stop_doing_Input"
+        #newRecord
+        class="mx-2 mt-6 border-solid"
+        [(ngModel)]="clickMessage"
+      >
+      </textarea>
+
+      <button
+        *ngIf="stop_doing_Input"
+        type="button"
+        class="bg-blue-500 text-white px-2 rounded ml-60"
+        (click)="
+          actionType = 'STOP_DOING';
+          addnote();
+          clickMessage = '';
+          stop_doing_Input = false
+        "
+      >
+        Add Note
+      </button>
+
+      <ul>
+        <li *ngFor="let record of stopLabelArray">
+          <div class="mx-2 mt-6 border rounded w-88 h-28 bg-gray-50">
+            {{ record.note }}
+
+            <br />
+            <div class="mt-12 ml-2">
+              <span id="profileImage">{{ record.userName | firstLetter }} </span
+              >{{ record.userName }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="md:w-1/3 p-4">
+    <div class="bg-gray-200 p-4 rounded-lg shadow-md">
+      <div class="p-4 relative flex justify-between items-center">
+        <h2 class="text-xl ml-2">Continue Doing</h2>
+        <button
+          class="px-2 border-solid border-2 border-gray-400 rounded-lg text-gray-500"
+        >
+          {{ continuecount }}
+        </button>
+      </div>
+
+      <button
+        (click)="continue_doing_Input = true"
+        class="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded w-full mt-5"
+      >
+        + Write Note
+      </button>
+
+      <textarea
+        placeholder="Text Here"
+        rows="4"
+        cols="40"
+        *ngIf="continue_doing_Input"
+        #newRecord
+        class="mx-2 mt-6 border-solid"
+        [(ngModel)]="clickMessage"
+      >
+      </textarea>
+
+      <button
+        *ngIf="continue_doing_Input"
+        type="button"
+        class="bg-blue-500 text-white px-2 rounded ml-60"
+        (click)="
+          actionType = 'CONTINUE_DOING';
+          addnote();
+          clickMessage = '';
+          continue_doing_Input = false
+        "
+      >
+        Add Note
+      </button>
+
+      <ul>
+        <li *ngFor="let record of countinueLabelArray">
+          <div
+            rows="4"
+            cols="40"
+            class="mx-2 mt-6 border rounded w-88 h-28 bg-gray-50"
+          >
+            {{ record.note }}
+
+            <br />
+            <div class="mt-12 ml-2">
+              <span id="profileImage">{{ record.userName | firstLetter }} </span
+              >{{ record.userName }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
