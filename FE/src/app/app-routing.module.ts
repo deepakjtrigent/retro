@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RoomComponent } from './room/room.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+
+const routes: Routes = [
+  { path: '', component: LandingPageComponent },
+  { path: 'retro/:retro_id', component: RoomComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
