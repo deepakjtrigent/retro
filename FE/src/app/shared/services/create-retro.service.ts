@@ -8,13 +8,18 @@ import { JoinUser } from '../model/user';
 @Injectable({
   providedIn: 'root',
 })
+
 export class CreateRetroService {
   constructor(private http: HttpClient) {}
 
+    private httpOptions = {
+    withCredentials: true, // Ensure cookies are sent
+  };
+  
   public getRetro(): Observable<any> {
     return this.http.get<any>(`http://127.0.0.1:8000/getalldata`);
   }
-
+  
   public createRetro(value:any): Observable<CreateRetroResponse> {
     return this.http.post<any>(retrospectiveUrls.createRetroUrl, value);
   }
@@ -32,4 +37,6 @@ export class CreateRetroService {
       data
     );
   }
+
+
 }

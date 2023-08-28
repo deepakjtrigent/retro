@@ -17,6 +17,10 @@ current_retro_id = ''
 projectName: str = ""
 sprintNumber: str = ""
 
+class Sample(BaseModel):
+    projectName:str
+    sprintNumber: str
+    displayName:str
 
 class User(BaseModel):
     displayName: str
@@ -31,22 +35,17 @@ class noteBM(User):
 
 @router.post("/create_retro")
 async def create_retro(data: Optional[dict], request: Request):
+    print("esrdtyu")
     global current_retro_id
     retro_id = str(uuid.uuid4())
     global admin_user_id
     admin_user_id = request.headers.get('RS-U')
-
-    retro_data[retro_id] = {"users": []}
-    retro_data[retro_id] = {"projectName": data['projectName'],
+    retro_data[retro_id] = {
+                            "projectName": data['projectName'],
                             "sprintNumber": data['sprintNumber'],
                             "displayName": data['displayName'],
                             "timer": "",
-                            "users": [
-                                {
-                                    "userId": admin_user_id,
-                                    "displayName": data['displayName'],
-                                    "isAdmin":True
-                                }],
+                            "users": [],
                                 "START_DOING": [],
                                 "STOP_DOING": [],
                                 "CONTINUE_DOING": []}
@@ -57,7 +56,7 @@ async def create_retro(data: Optional[dict], request: Request):
 
 
 @router.post("/retro/{retro_id}/join")
-async def join_room(retro_id: str, user_details: noteBM):
+async def join_room(retro_id: str, user_details: User):
     if retro_id in retro_data:
         global admin_user_id
         is_admin = True if user_details.userId == admin_user_id else False
@@ -71,12 +70,10 @@ async def join_room(retro_id: str, user_details: noteBM):
 
 @router.post("/retro/{retro_id}/store")
 async def update_room_data(retro_id: str, data: noteBM):
-    print(data, "Im insside tis api")
     if retro_id in room_websockets:
-        print(retro_id, "RETRO")
         for web in room_websockets[retro_id]:
             try:
-                await web['websocket'].send_json(jsonable_encoder(data))
+                await web['websocket'].send_text(json.dumps(jsonable_encoder(data)))
             except WebSocketDisconnect:
                 continue
 
@@ -96,7 +93,6 @@ async def update_room_data(retro_id: str, data: noteBM):
             raise HTTPException(status_code=400, detail="Invalid action_Type")
 
         if retro_id not in retro_data:
-            print("Not there")
             retro_data[retro_id] = {"START_DOING": [],
                                     "STOP_DOING": [], "CONTINUE_DOING": []}
 

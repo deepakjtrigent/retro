@@ -31,7 +31,6 @@ export class UserIdInterceptor implements HttpInterceptor {
         userId = userDetails.userId;
       } else {
         userId = '';
-
       }
     }
 

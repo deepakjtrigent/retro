@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers.rooms_manager import router as room_router
 from routers.websocket_manager import router as websocket_router
-
+from routers.time_manager import router as time_router
 
 # Define the URLs you want to accept cross-origin requests from.
 origins = [
@@ -29,6 +29,7 @@ app.add_middleware(
 #Include routers below
 app.include_router(room_router)
 app.include_router(websocket_router)
+app.include_router(time_router)
 
 
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastService, toastState } from './toast.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +10,9 @@ export class WebsocketService {
   private socket!: WebSocket;
   private readonly socketUrl: string = 'ws://localhost:8000/retro';
   public connected: boolean = false;
-  public recievedMessage: BehaviorSubject<any> = new BehaviorSubject({});
+  public recievedMessage: BehaviorSubject<any> = new BehaviorSubject('');
 
-  constructor(private toast: ToastService) {}
+  constructor(private toast: ToastService, private http: HttpClient) {}
 
   public connect(retro_id: string): void {
     this.socket = new WebSocket(`${this.socketUrl}/${retro_id}`);
@@ -22,19 +23,17 @@ export class WebsocketService {
     };
 
     this.socket.onmessage = (event: MessageEvent<any>): void => {
-      const message: any = event.data;
-      this.recievedMessage.next(message);      
-      this.toast.showToast(message, toastState.success);
-    };
+      this.recievedMessage.next(event.data);
 
-    this.socket.onclose = (event: Event): void => {
-      console.log('WebSocket connection closed:', event);
-      this.connected = false;
-    };
+      this.socket.onclose = (event: Event): void => {
+        console.log('WebSocket connection closed:', event);
+        this.connected = false;
+      };
 
-    this.socket.onerror = (): void => {
-      this.toast.showToast('Something went Bad', toastState.danger);
-      this.connected = false;
+      this.socket.onerror = (): void => {
+        this.toast.showToast('Something went Bad', toastState.danger);
+        this.connected = false;
+      };
     };
   }
 
@@ -43,5 +42,13 @@ export class WebsocketService {
       this.socket.close();
       this.connected = false;
     }
+  }
+
+  public startTimer(retroId: string): Observable<any> {
+    return this.http.post(`http://127.0.0.1:8000/start_timer/${retroId}`, {});
+  }
+
+  public stopTimer(retroId: string): Observable<any> {
+    return this.http.post(`http://127.0.0.1:8000/stop_timer/${retroId}`, {});
   }
 }
