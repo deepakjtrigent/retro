@@ -1,118 +1,108 @@
 import json
 from fastapi.encoders import jsonable_encoder
-from fastapi import APIRouter, HTTPException, Request, WebSocketDisconnect
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 from typing import Dict, List, Optional
 import uuid
 from pydantic import BaseModel
-from routers.data_manager import load_data, save_data
+from tinydb import Query, TinyDB, where
+from routers.data_manager import save_data_in_db, update_data_in_db
 from routers.websocket_manager import room_websockets
 
 router = APIRouter()
 
-retro_data: Dict[str, Dict[str, List[Dict[str, str]]]
-                 ] = load_data("retro_data.json")
-admin_user_id: str = ""
-current_retro_id = ''
-projectName: str = ""
-sprintNumber: str = ""
 
-class Sample(BaseModel):
-    projectName:str
-    sprintNumber: str
-    displayName:str
+# class Sample(BaseModel):
+#     projectName: str
+#     sprintNumber: str
+#     displayName: str
+
 
 class User(BaseModel):
     displayName: str
     userId: str
 
 
-class noteBM(User):
+class Note(User):
     noteId: str
     note: str
     actionType: str
 
 
 @router.post("/create_retro")
-async def create_retro(data: Optional[dict], request: Request):
-    print("esrdtyu")
-    global current_retro_id
+async def create_retro(data: Optional[dict]):
     retro_id = str(uuid.uuid4())
-    global admin_user_id
-    admin_user_id = request.headers.get('RS-U')
-    retro_data[retro_id] = {
-                            "projectName": data['projectName'],
-                            "sprintNumber": data['sprintNumber'],
-                            "displayName": data['displayName'],
-                            "timer": "",
-                            "users": [],
-                                "START_DOING": [],
-                                "STOP_DOING": [],
-                                "CONTINUE_DOING": []}
+    retro_data = {
+        "retroId": retro_id,
+        "projectName": data['projectName'],
+        "sprintNumber": data['sprintNumber'],
+        "displayName": data['displayName'],
+        "timer": "",
+        "users": [],
+        "START_DOING": [],
+        "STOP_DOING": [],
+        "CONTINUE_DOING": []}
 
-    save_data("retro_data.json", retro_data)
-    current_retro_id = retro_id
+    save_data_in_db(retro_data, 'rooms')
     return {"retro_id": retro_id}
 
 
 @router.post("/retro/{retro_id}/join")
 async def join_room(retro_id: str, user_details: User):
-    if retro_id in retro_data:
-        global admin_user_id
-        is_admin = True if user_details.userId == admin_user_id else False
-        retro_data[retro_id]['users'].append(
-            {"userId": user_details.userId, "displayName": user_details.displayName, "isAdmin": is_admin})
-        save_data("retro_data.json", retro_data)
-        return retro_data[retro_id]['users'][-1]
+    db = TinyDB('retro_data_db.json')
+    retro_rooms = db.table('rooms')
+    Room = Query()
+    Users = Query()
+    if retro_rooms.contains(Room.retroId == retro_id):
+        if not retro_rooms.contains((Room.users.any(Users.userId == user_details.userId)) & (Room.retroId == retro_id)):
+            users_in_retro_room = retro_rooms.search(
+                where('retroId') == retro_id)[0]['users']
+            user_to_be_stored = {"userId": user_details.userId, "displayName": user_details.displayName,
+                                 "isAdmin": True if not len(users_in_retro_room) else False}
+            update_data_in_db(user_to_be_stored, retro_id, 'users')
+            return user_to_be_stored
+        else:
+            return JSONResponse(status_code=403, content={"error": "User is already in the room"})
     else:
         return JSONResponse(status_code=404, content={"error": "Room not found"})
 
 
 @router.post("/retro/{retro_id}/store")
-async def update_room_data(retro_id: str, data: noteBM):
-    if retro_id in room_websockets:
-        for web in room_websockets[retro_id]:
-            try:
+async def update_room_data(retro_id: str, data: Note):
+    db = TinyDB('retro_data_db.json')
+    retro_rooms = db.table('rooms')
+    Room = Query()
+    Users = Query()
+    if retro_rooms.contains(Room.retroId == retro_id):
+        if retro_rooms.contains(Room.users.any(Users.userId == data.userId)):
+            noteId = str(uuid.uuid4())
+            if data.actionType == "START_DOING":
+                category = "START_DOING"
+            elif data.actionType == "STOP_DOING":
+                category = "STOP_DOING"
+            elif data.actionType == "CONTINUE_DOING":
+                category = "CONTINUE_DOING"
+            else:
+                raise HTTPException(
+                    status_code=400, detail="Invalid action_Type")
+            category_data = retro_rooms.search(
+                where('retroId') == retro_id)[0][category]
+            category_data.append({"noteId": noteId, "note": data.note,
+                                  "userId": data.userId, "userName": data.displayName})
+            update_data_in_db(category_data, retro_id, category)
+            for web in room_websockets[retro_id]:
                 await web['websocket'].send_text(json.dumps(jsonable_encoder(data)))
-            except WebSocketDisconnect:
-                continue
-
-    noteId = str(uuid.uuid4())
-
-    try:
-        with open('././retro_data.json', 'r') as f:
-            json_data = json.load(f)
-
-        if data.actionType == "START_DOING":
-            category = "START_DOING"
-        elif data.actionType == "STOP_DOING":
-            category = "STOP_DOING"
-        elif data.actionType == "CONTINUE_DOING":
-            category = "CONTINUE_DOING"
+            return {"response": data}
         else:
-            raise HTTPException(status_code=400, detail="Invalid action_Type")
-
-        if retro_id not in retro_data:
-            retro_data[retro_id] = {"START_DOING": [],
-                                    "STOP_DOING": [], "CONTINUE_DOING": []}
-
-        notes_list = retro_data[retro_id][category]
-        notes_list.append({"noteId": noteId, "note": data.note,
-                          "userId": data.userId, "userName": data.displayName})
-        with open('././retro_data.json', 'w') as f:
-            json.dump(retro_data, f, indent=4)
-
-        print("Data appended to JSON")
-    except Exception as e:
-        print(f"Error appending new note to JSON: {e}")
-    return {"response": data}
+            raise HTTPException(status_code=402, detail="User does not exist")
+    else:
+        raise HTTPException(status_code=404, detail="Room does not exist")
 
 
-@router.get('/getalldata')
-async def getData():
-    global current_retro_id
-    with open('././retro_data.json', 'r') as f:
-        json_data = json.load(f)
-    retro_id = current_retro_id
-    return json_data[retro_id]
-
+# @router.get('/getalldata')
+# async def getData():
+#     global current_retro_id
+#     with open('././retro_data.json', 'r') as f:
+#         json_data = json.load(f)
+#     retro_id = current_retro_id
+#     return json_data[retro_id]

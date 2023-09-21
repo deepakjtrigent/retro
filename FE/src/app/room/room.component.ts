@@ -84,7 +84,7 @@ export class RoomComponent implements OnInit {
         }
       }
     );
-    this.getRetroData();
+    // this.getRetroData();
     this.openJoinUserDialog();
   }
 
@@ -104,13 +104,12 @@ export class RoomComponent implements OnInit {
       if (this.myRecords.projectName && this.myRecords.sprintNumber) {
         this.projectName = this.myRecords.projectName;
         this.sprintNumber = this.myRecords.sprintNumber;
-        
       }
-      
+
       if (this.startLabelArray) {
         this.startLabelArray = this.myRecords.START_DOING;
         console.log(this.startLabelArray);
-        
+
         this.startcount = this.startLabelArray.length;
         console.log(this.startcount);
       }
@@ -153,14 +152,14 @@ export class RoomComponent implements OnInit {
           this.joinUser.displayName = userDisplayName;
           this.storageService.storeUserInCookies(this.joinUser);
           this.joinRetroFunc(this.joinUser);
-          this.websocketservice.connect(this.snap);
+          this.websocketservice.connect(this.snap, this.joinUser.userId);
           this.router.navigate([`retro/${this.snap}`]);
         }
       });
     } else {
       const userDetails = JSON.parse(userDetailsInCookies);
       this.joinRetroFunc(userDetails);
-      this.websocketservice.connect(this.snap);
+      this.websocketservice.connect(this.snap, userDetails.userId);
     }
   }
 

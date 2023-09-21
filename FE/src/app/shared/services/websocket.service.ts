@@ -14,12 +14,14 @@ export class WebsocketService {
 
   constructor(private toast: ToastService, private http: HttpClient) {}
 
-  public connect(retro_id: string): void {
+  public connect(retro_id: string, userId: string): void {
     this.socket = new WebSocket(`${this.socketUrl}/${retro_id}`);
     console.log('Websocket connection established!');
 
     this.socket.onopen = (event: Event): void => {
       this.connected = true;
+      console.log(userId)
+      this.socket.send(JSON.stringify({ userId: userId }));
     };
 
     this.socket.onmessage = (event: MessageEvent<any>): void => {
