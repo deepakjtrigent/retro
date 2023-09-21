@@ -3,17 +3,58 @@
   <form [formGroup]="userForm">
     <mat-form-field>
       <mat-label>Project Name</mat-label>
-      <input matInput formControlName="projectName" placeholder="Project Name" required />
-      <mat-error *ngIf="userForm.get('projectName')?.invalid && userForm.get('projectName')?.touched">
+      <input
+        matInput
+        formControlName="projectName"
+        placeholder="Project Name"
+        required
+      />
+      <mat-error
+        *ngIf="
+          userForm.get('projectName')?.invalid &&
+          userForm.get('projectName')?.touched
+        "
+      >
         {{ getProjectNameErrorMessage() }}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Sprint Number</mat-label>
-      <input matInput formControlName="sprintNumber" placeholder="Sprint Number" required />
-      <mat-error *ngIf="userForm.get('sprintNumber')?.invalid && userForm.get('sprintNumber')?.touched">
+      <input
+        matInput
+        formControlName="sprintNumber"
+        placeholder="Sprint Number"
+        min="1"
+        max="10"
+        type="number"
+        required
+      />
+      <mat-error
+        *ngIf="
+          userForm.get('sprintNumber')?.invalid &&
+          userForm.get('sprintNumber')?.touched
+        "
+      >
         {{ getSprintErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Display Name</mat-label>
+      <input
+        matInput
+        formControlName="displayName"
+        placeholder="Display Name"
+        required
+      />
+      <mat-error
+        *ngIf="
+          userForm.get('displayName')?.invalid &&
+          userForm.get('displayName')?.touched
+        "
+      >
+        {{ getDisplayNameErrorMessage() }}
       </mat-error>
     </mat-form-field>
   </form>

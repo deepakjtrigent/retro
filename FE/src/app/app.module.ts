@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule } from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,10 @@ import { FormsModule } from '@angular/forms';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { RoomComponent } from './room/room.component';
 import { UserFormComponent } from './user-form/user-form.component';
-import { ConfirmationDialogComponent } from './room/confirmation-dialog/confirmation-dialog.component';
+import { JoinRoomFormComponent } from './room/join-room-form/join-room-form.component';
+import { UserIdInterceptor } from './user-id.interceptor';
+import {FilterPipe} from './room/join-room-form/filter.pip'
+
 
 
 @NgModule({
@@ -23,8 +26,9 @@ import { ConfirmationDialogComponent } from './room/confirmation-dialog/confirma
     AppComponent,
     LandingPageComponent,
     RoomComponent,
-    ConfirmationDialogComponent,
-    UserFormComponent
+    UserFormComponent,
+    JoinRoomFormComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,13 @@ import { ConfirmationDialogComponent } from './room/confirmation-dialog/confirma
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:UserIdInterceptor  ,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

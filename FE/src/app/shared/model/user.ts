@@ -1,12 +1,27 @@
-export interface User {
-    userId: string;
-    projectName: string;
-    sprintNumber:number|string;
-  }
-  
-  export const defaultsUser: Pick<User, 'userId' | 'projectName'|'sprintNumber'> = {
-    userId: '',
-    projectName: '',
-    sprintNumber:''
-  };
-  
+
+
+export interface User{
+  userId: string;
+  displayName:string;
+}
+
+export const defaultUser:Pick<
+User,
+'userId' | 'displayName' >={
+userId:"",
+displayName :"",
+}
+
+
+export interface JoinUser {
+  displayName: string;
+  userId: string;
+  noteId?:string;
+  note?:string
+  actionType?:string
+}
+
+export const defaultsJoinUser: Pick<JoinUser, 'userId' | 'displayName'> = {
+  userId: '',
+  displayName: '',
+};
