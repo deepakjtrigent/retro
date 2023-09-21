@@ -8,7 +8,6 @@ import { StorageService } from '../shared/services/storage.service';
 import { CreateRetroResponse } from '../shared/model/retroId';
 import { UserFormComponent } from '../user-form/user-form.component';
 import { v4 as uuidv4 } from 'uuid';
-// import { WebsocketService } from '../shared/services/websocket.service';
 import { User, defaultUser } from '../shared/model/user';
 
 @Component({
@@ -23,7 +22,6 @@ export class LandingPageComponent implements OnInit {
   constructor(
     public userDialog: MatDialog,
     private toast: ToastService,
-    // private websocketservice: WebsocketService,
     private router: Router,
     private createRetroService: CreateRetroService,
     private cookieService: CookieService,

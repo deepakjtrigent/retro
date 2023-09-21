@@ -97,12 +97,3 @@ async def update_room_data(retro_id: str, data: Note):
             raise HTTPException(status_code=402, detail="User does not exist")
     else:
         raise HTTPException(status_code=404, detail="Room does not exist")
-
-
-# @router.get('/getalldata')
-# async def getData():
-#     global current_retro_id
-#     with open('././retro_data.json', 'r') as f:
-#         json_data = json.load(f)
-#     retro_id = current_retro_id
-#     return json_data[retro_id]
